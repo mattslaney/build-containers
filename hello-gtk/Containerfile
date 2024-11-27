@@ -1,0 +1,6 @@
+FROM ubuntu-build-container
+
+RUN apt-get install -y libgtk-3-dev
+
+CMD ["/app/build.sh"]
+

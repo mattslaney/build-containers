@@ -17,3 +17,5 @@ cd build-containers
 ls hello/build
 ```
 
+### Containerfile's
+The main containerfile is used for building projects, unless a project contains it's own Containerfile then this will be used as the build container
