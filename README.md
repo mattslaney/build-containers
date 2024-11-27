@@ -8,13 +8,22 @@ git clone https://github.com/mattslaney/build-containers.git
 cd build-containers
 
 # Build the container image
-./bc .
+./bc . --build
 
 # Build a project
-./bc hello
+./bc hello --build
 
 # See the build artifacts
-ls hello/dist
+./bc hello --ls
+
+# Find executables under the project/dist folder
+./bc hello --exe
+
+# Clean all build artifacts (untracked files under project folder)
+./bc --clean
+
+# See more usage options
+./bc --help
 ```
 
 ### Containerfile's

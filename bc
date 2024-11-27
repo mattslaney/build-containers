@@ -10,13 +10,20 @@ project: Name of project subdirectory in build-containers repo
 
 --options:
     --clean:    Clean the project directory (Remove all untracked/ignored files/directories)
-    --no-build: Do not run the build stage
+    --build:    Build the project
+    --ls:       List build artifacts
+    --exe:      List executables in project/dist
 EOF
 }
 
 clean() {
-    local $PROJECT=$1
-    git clean -fdx $PROJECT
+    local P=$1
+    git clean -fdx $P
+}
+
+list() {
+    local P=$1
+    git ls-files --others $P
 }
 
 # Process first arg
@@ -34,32 +41,33 @@ if [ ! -d $PROJECT ]; then
 fi
 
 shift
+if [ $# -eq 0 ]; then
+    echo -e "\e[33mArg count was zero but project was specified\e[0m"
+    echo "Doing nothing, did you mean to use --build"
+    echo "Specify --help to see usage"
+fi
 
 # Process remaining args
 while test $# -gt 0
 do
     case "$1" in
-        --)         # echo "Got to --, next args are for project script"
-                    shift
-                    break
-                    ;;
-        --clean)    # echo "Cleaning $PROJECT"
-                    clean
-                    ;;
-        --no-build) no_build=true
-                    ;;
-        *)          echo -e "\e[33mUnexpected arg: $1\e[0m"
-                    ;;
+        --)         shift; break;;
+        --build)    build=true;;
+        --clean)    clean $PROJECT;;
+        --exe)      find $PROJECT/dist -type f -executable -print;;
+        --help)     usage;;
+        --ls)       list $PROJECT;;
+        *)          echo -e "\e[33mUnexpected arg: $1\e[0m";;
     esac
     shift
 done
 
-if [ "$no_build" = "true" ]; then
+if [ "$build" != "true" ]; then
     exit 0
 fi
 
 if [[ $PROJECT == "." ]]; then
-    echo "Building build-container"
+    echo "Building main build-container"
     podman build -t build-container .
     exit 0
 fi
@@ -67,7 +75,7 @@ fi
 build_container="build-container"
 
 project_dir=$(pwd)/$PROJECT
-echo "Building $PROJECT: $project_dir"
+echo "Building project: $PROJECT"
 chmod +x $project_dir/build.sh
 
 # If the project has it's own Containerfile, use that
