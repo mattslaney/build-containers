@@ -34,6 +34,7 @@ if [ $(git ls-files --others -- $PROJECT | wc -l) -ne 0 ]; then
     fi
 fi
 
+echo "Starting build in $build_container"
 if [ "$DEBUG" = "true" ]; then
     echo "Starting container for debug"
     podman run --rm -it -v $project_dir:/app $build_container /bin/bash

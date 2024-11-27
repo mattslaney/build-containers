@@ -14,5 +14,5 @@ mkdir -p /app/build     # Somewhere to put build artifacts
 mkdir -p /app/build/log # Somewhere to put build logs
 mkdir -p /app/dist      # Somewhere to put the release files
 
-cowsay "Well, hello there"
+/usr/games/cowsay "Well, hello there"
 
