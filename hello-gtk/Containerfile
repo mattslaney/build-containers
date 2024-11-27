@@ -1,4 +1,4 @@
-FROM ubuntu-build-container
+FROM build-container
 
 RUN apt-get install -y libgtk-3-dev
 
