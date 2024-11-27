@@ -1,0 +1,6 @@
+FROM build-container
+
+RUN apt-get install -y cowsay
+
+CMD ["/app/build.sh"]
+
