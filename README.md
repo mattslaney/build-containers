@@ -8,13 +8,13 @@ git clone https://github.com/mattslaney/build-containers.git
 cd build-containers
 
 # Build the container image
-./build.sh .
+./bc .
 
 # Build a project
-./build hello
+./bc hello
 
 # See the build artifacts
-ls hello/build
+ls hello/dist
 ```
 
 ### Containerfile's
