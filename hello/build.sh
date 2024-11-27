@@ -10,17 +10,25 @@ echo "Inside build container"
 
 set -e
 
+mkdir -p /app/build/log
+mkdir -p /app/dist
+
+USER="World"
+if [ -n "$1" ]; then
+    echo "Using custom user: $1"
+    USER=$1
+fi
+
 mkdir -p /usr/src/hello
 cat > /usr/src/hello/hello.cpp << EOF
 #include <iostream>
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+    std::cout << "Hello, $USER!" << std::endl;
     return 0;
 }
 EOF
 
-mkdir -p /app/build/log
 g++ -v /usr/src/hello/hello.cpp -o /usr/src/hello/hello 2>&1 | tee /app/build/log/build.log
 result=${PIPESTATUS[0]}
 if [ $result -ne 0 ]; then
@@ -33,6 +41,5 @@ if [ ! -f /usr/src/hello/hello ]; then
     exit 1
 fi
 
-mkdir -p /app/build/release
-cp /usr/src/hello/hello /app/build/release
+cp /usr/src/hello/hello /app/dist
 
