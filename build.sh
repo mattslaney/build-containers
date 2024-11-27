@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PROJECT=$1
+PROJECT=${1%/}
 if [ -z $PROJECT ]; then
     echo "Expected name of project to build"
     exit 1
