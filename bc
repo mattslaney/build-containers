@@ -9,10 +9,11 @@ usage: ./bc project [--options] [-- --project-args]
 project: Name of project subdirectory in build-containers repo
 
 --options:
-    --clean:    Clean the project directory (Remove all untracked/ignored files/directories)
-    --build:    Build the project
-    --ls:       List build artifacts
-    --exe:      List executables in project/dist
+    --build [-b]:   Build the project
+    --clean [-c]:   Clean the project directory (Remove all untracked/ignored files/directories)
+    --exe:          List executables in project/dist
+    --ls:           List build artifacts
+    --:             Arguments passed after the -- arg will be handled by the project build script
 EOF
 }
 
@@ -52,8 +53,8 @@ while test $# -gt 0
 do
     case "$1" in
         --)         shift; break;;
-        --build)    build=true;;
-        --clean)    clean $PROJECT;;
+        -b|--build) build=true;;
+        -c|--clean) clean $PROJECT;;
         --exe)      find $PROJECT/dist -type f -executable -print;;
         --help)     usage;;
         --ls)       list $PROJECT;;
